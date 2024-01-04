@@ -5,13 +5,11 @@ import (
 	"github.com/streadway/amqp"
 	"gitlab.com/ptflp/gopubsub/rabbitmq"
 	"log"
+	"time"
 )
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
-	if err != nil {
-		log.Fatalf("Не удалось установить соединение с RabbitMQ: %v", err)
-	}
+	conn, err := ConnectAmqpWithRetry("amqp://guest:guest@rabbitmq:5672/")
 	fmt.Println("Удалось подключиться к rabbit")
 	rabbitMQ, err := rabbitmq.NewRabbitMQ(conn)
 	if err != nil {
@@ -24,4 +22,16 @@ func main() {
 	}
 
 	fmt.Println("Вышли из приложения")
+}
+
+func ConnectAmqpWithRetry(address string) (*amqp.Connection, error) {
+	for i := 0; i < 5; i++ {
+		conn, err := amqp.Dial(address)
+		if err != nil {
+			time.Sleep(3 * time.Second)
+			continue
+		}
+		return conn, nil
+	}
+	return nil, fmt.Errorf("не удалось подключиться к rabbit")
 }
