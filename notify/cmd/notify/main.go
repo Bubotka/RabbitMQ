@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/streadway/amqp"
 	"gitlab.com/ptflp/gopubsub/rabbitmq"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -18,14 +21,22 @@ func main() {
 
 	messages, err := rabbitMQ.Subscribe("limit")
 	for msg := range messages {
-		fmt.Println(msg)
-	}
+		fmt.Println("Отправляем смс пользовтелю")
+		response, err := http.Post("http://proxy:8080/api/sms/send", "application/json", bytes.NewBuffer(msg.Data))
+		fmt.Println("Смс отправили")
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	fmt.Println("Вышли из приложения")
+		data, _ := ioutil.ReadAll(response.Body)
+
+		fmt.Println("Содержимое сообщения", string(data))
+	}
 }
 
 func ConnectAmqpWithRetry(address string) (*amqp.Connection, error) {
-	for i := 0; i < 5; i++ {
+	time.Sleep(15 * time.Second)
+	for i := 0; i < 3; i++ {
 		conn, err := amqp.Dial(address)
 		if err != nil {
 			time.Sleep(3 * time.Second)

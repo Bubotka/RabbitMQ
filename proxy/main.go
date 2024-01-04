@@ -37,6 +37,7 @@ func main() {
 
 	conn, err := ConnectAmqpWithRetry("amqp://guest:guest@rabbitmq:5672/")
 
+	rabbitmq.CreateExchange(conn, "limit", "topic")
 	rabbitMQ, err := rabbitmq.NewRabbitMQ(conn)
 	if err != nil {
 		log.Fatal(err)

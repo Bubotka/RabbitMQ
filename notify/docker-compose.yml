@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   notify:
+    container_name: notify
     build: .
     networks:
       - rabbitmq_mylocal

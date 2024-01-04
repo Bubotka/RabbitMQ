@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/Bubotka/Microservices/proxy/internal/infrastructure/clients/auth"
 	clientadapterauth "github.com/Bubotka/Microservices/proxy/internal/infrastructure/clients/auth/grpc/client_adapter"
 	geogrpc "github.com/Bubotka/Microservices/proxy/internal/infrastructure/clients/geo"
@@ -20,6 +21,7 @@ import (
 	"github.com/ptflp/godecoder"
 	"gitlab.com/ptflp/gopubsub/queue"
 	"go.uber.org/zap"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -53,6 +55,14 @@ func NewRouter(
 	tokenAuth := jwtauth.New("HS256", []byte("mysecretkey"), nil)
 	r.Use(reverseProxy.ReverseProxy)
 
+	r.Post("/api/sms/send", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Println("Пришло смс")
+		data, _ := ioutil.ReadAll(r.Body)
+		fmt.Println(string(data))
+		w.Write(data)
+	})
+
 	r.Route("/api/address", func(r chi.Router) {
 		/*	r.Use(jwtauth.Verifier(tokenAuth))
 			r.Use(jwtauth.Authenticator)*/
@@ -64,6 +74,7 @@ func NewRouter(
 	})
 
 	r.Route("/api/auth", func(r chi.Router) {
+		r.Use(rateLimit.RateLimit)
 		r.Post("/register", authController.Register)
 		r.Post("/login", authController.Login)
 	})
