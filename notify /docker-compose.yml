@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  notify:
+    build: .
+    networks:
+      - rabbitmq_mylocal
+networks:
+  rabbitmq_mylocal:
+    external: true
