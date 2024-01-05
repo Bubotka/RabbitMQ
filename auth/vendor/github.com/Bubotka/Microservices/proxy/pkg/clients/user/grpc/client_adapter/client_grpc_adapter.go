@@ -22,7 +22,7 @@ func NewUserClientGRpcAdapter(client us.UsererClient) *UserClientGRpcAdapter {
 
 func (c *UserClientGRpcAdapter) Create(user models.User) error {
 	req := &us.UserRequest{User: &us.User{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	}}
 	_, err := c.client.Create(context.Background(), req)
@@ -31,7 +31,7 @@ func (c *UserClientGRpcAdapter) Create(user models.User) error {
 
 func (c *UserClientGRpcAdapter) CheckUser(user models.User) error {
 	req := &us.UserRequest{User: &us.User{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	}}
 	_, err := c.client.CheckUser(context.Background(), req)
@@ -39,7 +39,7 @@ func (c *UserClientGRpcAdapter) CheckUser(user models.User) error {
 }
 
 func (c *UserClientGRpcAdapter) Profile(username string) (models.User, error) {
-	req := &us.ProfileRequest{Username: username}
+	req := &us.ProfileRequest{Email: username}
 	user, err := c.client.Profile(context.Background(), req)
 	if err != nil {
 		return models.User{}, err
@@ -47,7 +47,7 @@ func (c *UserClientGRpcAdapter) Profile(username string) (models.User, error) {
 
 	return models.User{
 		ID:       0,
-		Username: user.User.Username,
+		Email:    user.User.Email,
 		Password: user.User.Password,
 		IsDelete: false,
 	}, nil
@@ -62,7 +62,7 @@ func (c *UserClientGRpcAdapter) List() ([]models.User, error) {
 	for _, r := range response.Users {
 		user := models.User{
 			ID:       0,
-			Username: r.Username,
+			Email:    r.Email,
 			Password: r.Password,
 			IsDelete: false,
 		}

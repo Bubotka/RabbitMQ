@@ -3,7 +3,7 @@ package controller
 import "github.com/Bubotka/Microservices/user/domain/models"
 
 type CreateRequest struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 

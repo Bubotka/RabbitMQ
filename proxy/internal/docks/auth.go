@@ -10,7 +10,7 @@ type registerRequest struct {
 	// Userdata - данные пользователя
 	// in: body
 	// required: true
-	// example: {"username":"Kolia","password":"123"}
+	// example: {"email":"asdas@gmail.com","password":"123"}
 	Userdata string
 }
 
@@ -32,7 +32,7 @@ type loginRequest struct {
 	// Userdata - данные пользователя
 	// in: body
 	// required: true
-	// example: {"username":"Kolia","password":"123"}
+	// example: {"email":"asdas@gmail.com","password":"123"}
 	Userdata string
 }
 
@@ -40,6 +40,5 @@ type loginRequest struct {
 type loginResponse struct {
 	// in: body
 	// Token токен пользователя.
-	// example: {"23owiudfghjklasdfgsdw"}
 	Token string
 }

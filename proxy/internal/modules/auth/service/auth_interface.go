@@ -6,7 +6,7 @@ type Auther interface {
 }
 
 type RegisterIn struct {
-	Username string
+	Email    string
 	Password string
 }
 
@@ -15,7 +15,7 @@ type RegisterOut struct {
 }
 
 type LoginIn struct {
-	Username string
+	Email    string
 	Password string
 }
 type LoginOut struct {

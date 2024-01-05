@@ -9,7 +9,7 @@ import (
 )
 
 type Userer interface {
-	GetByUsername(w http.ResponseWriter, r *http.Request)
+	GetByEmail(w http.ResponseWriter, r *http.Request)
 	List(w http.ResponseWriter, r *http.Request)
 }
 
@@ -22,9 +22,9 @@ func NewUserController(service service.Userer, responder responder.Responder) *U
 	return &UserController{service: service, Responder: responder}
 }
 
-func (u *UserController) GetByUsername(w http.ResponseWriter, r *http.Request) {
-	username := chi.URLParam(r, "username")
-	out := u.service.GetByUsername(service.GetIn{Username: username})
+func (u *UserController) GetByEmail(w http.ResponseWriter, r *http.Request) {
+	email := chi.URLParam(r, "email")
+	out := u.service.GetByEmail(service.GetIn{Email: email})
 	if out.Error != nil {
 		u.Responder.ErrorBadRequest(w, out.Error)
 		return

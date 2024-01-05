@@ -15,14 +15,14 @@ func NewAuthService(auth auth.AuthProviderer) *AuthService {
 
 func (a *AuthService) Register(in RegisterIn) RegisterOut {
 	err := a.auth.Register(models.User{
-		Username: in.Username,
+		Email:    in.Email,
 		Password: in.Password,
 	})
 	return RegisterOut{err}
 }
 func (a *AuthService) Login(in LoginIn) LoginOut {
 	token, err := a.auth.Login(models.User{
-		Username: in.Username,
+		Email:    in.Email,
 		Password: in.Password,
 	})
 	if err != nil {

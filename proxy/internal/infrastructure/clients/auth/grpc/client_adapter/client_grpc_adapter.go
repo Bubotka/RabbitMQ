@@ -21,7 +21,7 @@ func NewAuthClientGRpcAdapter(client au.AuthClient) *AuthClientGRpcAdapter {
 
 func (a *AuthClientGRpcAdapter) Register(user models.User) error {
 	req := &au.UserAuthRequest{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	}
 	_, err := a.client.Register(context.Background(), req)
@@ -30,7 +30,7 @@ func (a *AuthClientGRpcAdapter) Register(user models.User) error {
 
 func (a *AuthClientGRpcAdapter) Login(user models.User) (string, error) {
 	req := &au.UserAuthRequest{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	}
 	token, err := a.client.Login(context.Background(), req)

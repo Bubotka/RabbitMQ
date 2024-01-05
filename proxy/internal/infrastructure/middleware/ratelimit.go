@@ -2,8 +2,10 @@ package middleware
 
 import (
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"gitlab.com/ptflp/gopubsub/queue"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -23,9 +25,11 @@ func (rl *RateLimit) RateLimit(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusTooManyRequests)
 			fmt.Println("Всё кончились попытки")
 
-			err := rl.queuer.Publish("limit", []byte("Ну усё ты попал, нет больше попыток!"))
+			email := getEmailFromJWT(r)
+
+			err := rl.queuer.Publish("limit", []byte(email))
 			if err != nil {
-				fmt.Println("Чёт не получить отправить сообщение")
+				fmt.Println("Чёт не получилось отправить сообщение")
 			}
 			return
 		}
@@ -41,4 +45,22 @@ func (rl *RateLimit) ResetCurrentRequestsPerTime(timeInSec int) {
 			rl.currentRequests = 0
 		}
 	}()
+}
+
+func getEmailFromJWT(r *http.Request) string {
+	tokenString := r.Header.Get("Authorization")
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte("mysecretkey"), nil
+	})
+
+	if err != nil {
+		fmt.Println("Ошибка при токене", err)
+		return ""
+	}
+
+	claims, _ := token.Claims.(jwt.MapClaims)
+	email := claims["email"].(string)
+	fmt.Println(email)
+	return email
 }

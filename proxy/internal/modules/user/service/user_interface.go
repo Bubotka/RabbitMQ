@@ -3,7 +3,7 @@ package service
 import "github.com/Bubotka/Microservices/user/domain/models"
 
 type Userer interface {
-	GetByUsername(in GetIn) GetOut
+	GetByEmail(in GetIn) GetOut
 	List() ListOut
 }
 
@@ -17,7 +17,7 @@ type CreateOut struct {
 }
 
 type GetIn struct {
-	Username string
+	Email string
 }
 
 type GetOut struct {

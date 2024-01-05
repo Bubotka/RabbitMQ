@@ -21,7 +21,7 @@ func NewUserService(storage storage.UserRepository) *User {
 
 func (u *User) CheckUser(ctx context.Context, request *us.UserRequest) (*empty.Empty, error) {
 	err := u.storage.CheckUser(ctx, models.User{
-		Username: request.User.Username,
+		Email:    request.User.Email,
 		Password: request.User.Password,
 	})
 	return &empty.Empty{}, err
@@ -29,12 +29,12 @@ func (u *User) CheckUser(ctx context.Context, request *us.UserRequest) (*empty.E
 
 func (u *User) Profile(ctx context.Context, request *us.ProfileRequest) (*us.ProfileResponse, error) {
 	fmt.Println("Profile")
-	user, err := u.storage.GetByUsername(ctx, request.Username)
+	user, err := u.storage.GetByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
 	}
 	return &us.ProfileResponse{User: &us.User{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	}}, nil
 }
@@ -49,7 +49,7 @@ func (u *User) List(ctx context.Context, empty *empty.Empty) (*us.ListResponse, 
 	var users []*us.User
 	for _, r := range respone {
 		user := &us.User{
-			Username: r.Username,
+			Email:    r.Email,
 			Password: r.Password,
 		}
 		users = append(users, user)
@@ -61,7 +61,7 @@ func (u *User) List(ctx context.Context, empty *empty.Empty) (*us.ListResponse, 
 func (u *User) Create(ctx context.Context, request *us.UserRequest) (*empty.Empty, error) {
 	user := models.User{
 		ID:       0,
-		Username: request.User.Username,
+		Email:    request.User.Email,
 		Password: request.User.Password,
 		IsDelete: false,
 	}

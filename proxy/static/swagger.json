@@ -89,7 +89,7 @@
         "operationId": "loginRequest",
         "parameters": [
           {
-            "example": "{\"username\":\"Kolia\",\"password\":\"123\"}",
+            "example": "{\"email\":\"asdas@gmail.com\",\"password\":\"123\"}",
             "description": "Userdata - данные пользователя",
             "name": "Userdata",
             "in": "body",
@@ -115,7 +115,7 @@
         "operationId": "registerRequest",
         "parameters": [
           {
-            "example": "{\"username\":\"Kolia\",\"password\":\"123\"}",
+            "example": "{\"email\":\"asdas@gmail.com\",\"password\":\"123\"}",
             "description": "Userdata - данные пользователя",
             "name": "Userdata",
             "in": "body",
@@ -153,7 +153,7 @@
         }
       }
     },
-    "/api/user/profile/{username}": {
+    "/api/user/profile/{email}": {
       "get": {
         "security": [
           {
@@ -170,8 +170,9 @@
         "parameters": [
           {
             "type": "string",
-            "description": "Username - имя пользователя",
-            "name": "Username",
+            "x-go-name": "Email",
+            "description": "Email - имя пользователя",
+            "name": "email",
             "in": "path",
             "required": true
           }
@@ -226,6 +227,9 @@
     "User": {
       "type": "object",
       "properties": {
+        "Email": {
+          "type": "string"
+        },
         "ID": {
           "type": "integer",
           "format": "int64"
@@ -234,9 +238,6 @@
           "type": "boolean"
         },
         "Password": {
-          "type": "string"
-        },
-        "Username": {
           "type": "string"
         }
       },

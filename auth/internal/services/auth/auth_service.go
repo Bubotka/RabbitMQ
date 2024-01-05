@@ -27,7 +27,7 @@ func (a *AuthService) Register(ctx context.Context, request *au.UserAuthRequest)
 	}
 
 	err = a.user.CheckUser(models.User{
-		Username: request.Username,
+		Email:    request.Email,
 		Password: request.Password,
 	})
 
@@ -36,7 +36,7 @@ func (a *AuthService) Register(ctx context.Context, request *au.UserAuthRequest)
 	}
 
 	err = a.user.Create(models.User{
-		Username: request.Username,
+		Email:    request.Email,
 		Password: string(password),
 		IsDelete: false,
 	})
@@ -44,7 +44,7 @@ func (a *AuthService) Register(ctx context.Context, request *au.UserAuthRequest)
 }
 
 func (a *AuthService) Login(ctx context.Context, request *au.UserAuthRequest) (*au.LoginResponse, error) {
-	user, err := a.user.Profile(request.Username)
+	user, err := a.user.Profile(request.Email)
 	fmt.Println("Auth login", err)
 	if err != nil {
 		return nil, err
@@ -57,6 +57,6 @@ func (a *AuthService) Login(ctx context.Context, request *au.UserAuthRequest) (*
 	}
 
 	tokenAuth := jwtauth.New("HS256", []byte("mysecretkey"), nil)
-	_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"username": request.Username})
+	_, tokenString, _ := tokenAuth.Encode(map[string]interface{}{"email": request.Email})
 	return &au.LoginResponse{Token: tokenString}, nil
 }

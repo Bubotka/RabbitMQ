@@ -46,7 +46,7 @@ func (_m *UserRepository) Create(ctx context.Context, user models.User) error {
 }
 
 // GetByUsername provides a mock function with given fields: ctx, username
-func (_m *UserRepository) GetByUsername(ctx context.Context, username string) (models.User, error) {
+func (_m *UserRepository) GetByEmail(ctx context.Context, username string) (models.User, error) {
 	ret := _m.Called(ctx, username)
 
 	var r0 models.User

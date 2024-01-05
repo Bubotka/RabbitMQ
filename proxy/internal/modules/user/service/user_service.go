@@ -13,8 +13,8 @@ func NewUserService(user grpc.UserProviderer) *UserService {
 	return &UserService{user: user}
 }
 
-func (u *UserService) GetByUsername(in GetIn) GetOut {
-	user, err := u.user.Profile(in.Username)
+func (u *UserService) GetByEmail(in GetIn) GetOut {
+	user, err := u.user.Profile(in.Email)
 	if err != nil {
 		return GetOut{models.User{}, err}
 	}

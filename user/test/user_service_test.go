@@ -39,7 +39,7 @@ func TestUser_CheckUser(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			u := service.NewUserService(userRepository)
 
-			userRepository.On("CheckUser", context.Background(), models.User{Username: "kolia", Password: "123"}).
+			userRepository.On("CheckUser", context.Background(), models.User{Email: "kolia", Password: "123"}).
 				Return(nil)
 
 			_, err := u.CheckUser(tt.args.ctx, tt.args.request)
@@ -77,7 +77,7 @@ func TestUser_Create(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			u := service.NewUserService(userRepository)
-			userRepository.On("Create", context.Background(), models.User{Username: "kolia", Password: "123"}).
+			userRepository.On("Create", context.Background(), models.User{Email: "kolia", Password: "123"}).
 				Return(nil)
 			_, err := u.Create(tt.args.ctx, tt.args.request)
 			if (err != nil) != tt.wantErr {
@@ -150,7 +150,7 @@ func TestUser_Profile(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			u := service.NewUserService(userRepository)
-			userRepository.On("GetByUsername", context.Background(), "kolia").Return(models.User{}, nil)
+			userRepository.On("GetByEmail", context.Background(), "kolia").Return(models.User{}, nil)
 			_, err := u.Profile(tt.args.ctx, tt.args.request)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Profile() error = %v, wantErr %v", err, tt.wantErr)

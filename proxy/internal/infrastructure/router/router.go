@@ -63,9 +63,17 @@ func NewRouter(
 		w.Write(data)
 	})
 
+	r.Post("/api/email/send", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Println("Пришло письмо на почту")
+		data, _ := ioutil.ReadAll(r.Body)
+		fmt.Println(string(data))
+		w.Write(data)
+	})
+
 	r.Route("/api/address", func(r chi.Router) {
-		/*	r.Use(jwtauth.Verifier(tokenAuth))
-			r.Use(jwtauth.Authenticator)*/
+		r.Use(jwtauth.Verifier(tokenAuth))
+		r.Use(jwtauth.Authenticator)
 
 		r.Use(rateLimit.RateLimit)
 
@@ -74,7 +82,6 @@ func NewRouter(
 	})
 
 	r.Route("/api/auth", func(r chi.Router) {
-		r.Use(rateLimit.RateLimit)
 		r.Post("/register", authController.Register)
 		r.Post("/login", authController.Login)
 	})
@@ -83,7 +90,9 @@ func NewRouter(
 		r.Use(jwtauth.Verifier(tokenAuth))
 		r.Use(jwtauth.Authenticator)
 
-		r.Get("/profile/{username}", userController.GetByUsername)
+		r.Use(rateLimit.RateLimit)
+
+		r.Get("/profile/{email}", userController.GetByEmail)
 		r.Get("/list", userController.List)
 	})
 

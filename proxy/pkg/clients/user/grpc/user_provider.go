@@ -9,7 +9,7 @@ import (
 type UserProviderer interface {
 	Create(user models.User) error
 	CheckUser(user models.User) error
-	Profile(username string) (models.User, error)
+	Profile(email string) (models.User, error)
 	List() ([]models.User, error)
 }
 
@@ -27,8 +27,8 @@ func (u *UserProvider) Create(user models.User) error {
 	return u.client.Create(user)
 }
 
-func (u *UserProvider) Profile(username string) (models.User, error) {
-	return u.client.Profile(username)
+func (u *UserProvider) Profile(email string) (models.User, error) {
+	return u.client.Profile(email)
 }
 
 func (u *UserProvider) List() ([]models.User, error) {

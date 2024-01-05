@@ -15,7 +15,7 @@ func (u *UserStorage) CheckUser(ctx context.Context, user models.User) error {
 	var users []models.User
 	_ = u.adapter.List(ctx, &user, models.User{}, adapter.Condition{
 		Equal: map[string]interface{}{
-			"username": user.Username,
+			"email":    user.Email,
 			"password": user.Password,
 		},
 	})
@@ -37,11 +37,11 @@ func (u *UserStorage) Create(ctx context.Context, user models.User) error {
 	return err
 }
 
-func (u *UserStorage) GetByUsername(ctx context.Context, username string) (models.User, error) {
+func (u *UserStorage) GetByEmail(ctx context.Context, email string) (models.User, error) {
 	var user []models.User
 	err := u.adapter.List(ctx, &user, models.User{}, adapter.Condition{
 		Equal: map[string]interface{}{
-			"username": username,
+			"email": email,
 		},
 	})
 

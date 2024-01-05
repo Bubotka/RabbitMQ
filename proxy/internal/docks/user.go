@@ -19,7 +19,7 @@ type ListResponseDock struct {
 	Response controller.ListResponse
 }
 
-// swagger:route GET /api/user/profile/{username} user ProfileRequest
+// swagger:route GET /api/user/profile/{email} user ProfileRequest
 // Инфа о пользователе.
 // security:
 // 	- Bearer: []
@@ -28,10 +28,10 @@ type ListResponseDock struct {
 
 // swagger:parameters ProfileRequest
 type ProfileRequest struct {
-	// Username - имя пользователя
+	// Email - имя пользователя
 	// in: path
 	// required: true
-	Username string `json:"Username"`
+	Email string `json:"email"`
 }
 
 // swagger:response ProfileResponse

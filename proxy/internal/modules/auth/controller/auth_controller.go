@@ -31,7 +31,7 @@ func (a *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := a.auth.Register(service.RegisterIn{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	})
 
@@ -53,7 +53,7 @@ func (a *AuthController) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := a.auth.Login(service.LoginIn{
-		Username: user.Username,
+		Email:    user.Email,
 		Password: user.Password,
 	})
 
